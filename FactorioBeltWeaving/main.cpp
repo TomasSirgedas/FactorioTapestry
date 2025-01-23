@@ -5,6 +5,8 @@
 #include <optional>
 #include <unordered_set>
 #include <unordered_map>
+#include <functional>
+#include <fstream>
 #include "XY.h"
 #include "Timer.h"
 #include "trace.h"
@@ -353,7 +355,7 @@ public:
          findAllPaths( pathLen, maxCost, state, state, path );
    }
 
-   void findAllBitPatterns( int pathLen, int maxCost, BeltState initialState, BeltState state, BitPattern& pattern, vector<BeltState>& path, unordered_set<BitPattern, BitPattern::Hasher>& usedBitPatterns ) const
+   void findAllBitPatterns( int pathLen, int maxCost, BeltState initialState, BeltState state, BitPattern& pattern, vector<BeltState>& path, unordered_set<BitPattern, BitPattern::Hasher>& usedBitPatterns, const function<void( BitPattern, vector<BeltState> )>& func ) const
    {
       if ( m[pathLen].at( initialState ).at( state ).cost > maxCost )
          return;
@@ -364,8 +366,9 @@ public:
             return;
 
          vector<BeltState> reversedPath( path.rbegin(), path.rend() );
-         trace << pattern.reverseStr() << endl;
-         trace << PathDescriber( reversedPath ).str() << " #" << usedBitPatterns.size() << endl;
+         //trace << pattern.reverseStr() << endl;
+         //trace << PathDescriber( reversedPath ).str() << " #" << usedBitPatterns.size() << endl;
+         func( pattern, reversedPath );
          return;
       }
 
@@ -373,20 +376,20 @@ public:
       path.push_back( state );
 
       for ( BeltState prevState : m_allStates.prevStates( state ) )
-         findAllBitPatterns( pathLen - 1, maxCost - (state.hasBelt() ? 1 : 0), initialState, prevState, pattern, path, usedBitPatterns );
+         findAllBitPatterns( pathLen - 1, maxCost - (state.hasBelt() ? 1 : 0), initialState, prevState, pattern, path, usedBitPatterns, func );
 
       path.pop_back();
       pattern.pop_back();
    }
 
-   void findAllBitPatterns( int pathLen, int maxCost ) const
+   void findAllBitPatterns( int pathLen, int maxCost, function<void( BitPattern, vector<BeltState> )> func ) const
    {
       BitPattern pattern;
       vector<BeltState> path;
       unordered_set<BitPattern, BitPattern::Hasher> usedBitPatterns;
       for ( BeltState state : m_allStates.m_allStates )
       {
-         findAllBitPatterns( pathLen, maxCost, state, state, pattern, path, usedBitPatterns );
+         findAllBitPatterns( pathLen, maxCost, state, state, pattern, path, usedBitPatterns, func );
       }
    }
 
@@ -397,8 +400,7 @@ public:
 
 int main()
 {
-   const int NUM_BELTS = 3;
-   const int LENGTH = 34;
+   const int NUM_BELTS = 2;   
 
    AllStates allStates( NUM_BELTS );
 
@@ -408,12 +410,31 @@ int main()
    for ( int pathLen = 1; pathLen <= MAX_PATH_LEN; pathLen++ )
       trace << pathFinder.bestLoopCost( pathLen ) << "/" << pathLen << " " << (double)pathFinder.bestLoopCost( pathLen ) / pathLen << endl;
 
+
    //auto path = pathFinder.findABestPath( 15 );
    //trace << PathDescriber( path ).str();
-
    //pathFinder.findAllPaths( 8, 4 );
 
-   pathFinder.findAllBitPatterns( LENGTH, pathFinder.bestLoopCost( LENGTH ) );
+   for ( int LENGTH = 3; LENGTH <= MAX_PATH_LEN; LENGTH++ )
+   {
+      trace << "LENGTH = " << LENGTH << endl;
+
+      int COST = pathFinder.bestLoopCost( LENGTH );
+      
+      stringstream filename;
+      filename << "..\\results\\" << NUM_BELTS << " belt\\" << LENGTH << "_" << COST << ".txt";
+      ofstream f( filename.str().c_str() );
+
+      pathFinder.findAllBitPatterns( LENGTH, pathFinder.bestLoopCost( LENGTH ), [&]( BitPattern pattern, vector<BeltState> path ) {
+         f     << pattern.reverseStr() << endl;
+         //trace << pattern.reverseStr() << endl;
+         f     << PathDescriber( path ).str() << endl;
+         //trace << PathDescriber( path ).str() << endl;
+      } );
+      trace << endl;
+      trace << endl;
+      trace << endl;
+   }
 
    return 0;
 }
