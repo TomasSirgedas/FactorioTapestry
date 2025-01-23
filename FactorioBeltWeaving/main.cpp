@@ -425,7 +425,7 @@ int main()
       filename << "..\\results\\" << NUM_BELTS << " belt\\" << LENGTH << "_" << COST << ".txt";
       ofstream f( filename.str().c_str() );
 
-      pathFinder.findAllBitPatterns( LENGTH, pathFinder.bestLoopCost( LENGTH ), [&]( BitPattern pattern, vector<BeltState> path ) {
+      pathFinder.findAllBitPatterns( LENGTH, COST, [&]( BitPattern pattern, vector<BeltState> path ) {
          f     << pattern.reverseStr() << endl;
          //trace << pattern.reverseStr() << endl;
          f     << PathDescriber( path ).str() << endl;
