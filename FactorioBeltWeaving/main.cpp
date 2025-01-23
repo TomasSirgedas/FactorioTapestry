@@ -400,7 +400,7 @@ public:
 
 int main()
 {
-   const int NUM_BELTS = 2;   
+   const int NUM_BELTS = 3;   
 
    AllStates allStates( NUM_BELTS );
 
@@ -415,11 +415,12 @@ int main()
    //trace << PathDescriber( path ).str();
    //pathFinder.findAllPaths( 8, 4 );
 
-   for ( int LENGTH = 3; LENGTH <= MAX_PATH_LEN; LENGTH++ )
+   //for ( int LENGTH = 3; LENGTH <= MAX_PATH_LEN; LENGTH++ )
+   for ( int LENGTH : { 12, 13, 15, 18, 23, 24, 26, 29, 34 } )
    {
       trace << "LENGTH = " << LENGTH << endl;
 
-      int COST = pathFinder.bestLoopCost( LENGTH );
+      int COST = pathFinder.bestLoopCost( LENGTH ) + 1;
       
       stringstream filename;
       filename << "..\\results\\" << NUM_BELTS << " belt\\" << LENGTH << "_" << COST << ".txt";
@@ -428,7 +429,7 @@ int main()
       pathFinder.findAllBitPatterns( LENGTH, COST, [&]( BitPattern pattern, vector<BeltState> path ) {
          f     << pattern.reverseStr() << endl;
          //trace << pattern.reverseStr() << endl;
-         f     << PathDescriber( path ).str() << endl;
+         //f     << PathDescriber( path ).str() << endl;
          //trace << PathDescriber( path ).str() << endl;
       } );
       trace << endl;
