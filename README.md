@@ -2,7 +2,7 @@
 
 ## Interpretting results
 
-In the `results` folder you'll see entries like this:
+In the [results](results) folder you'll see entries like this:
 ```
 XXX.X.XXX..XXX.XX.XX.X.XX.XX.XXX..
 4...4...4...4..4...4...4...4..4...
