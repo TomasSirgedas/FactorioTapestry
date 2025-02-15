@@ -360,8 +360,8 @@ void printBraidBitPatterns( int numberOfBelts, int length, int cost, PrintPatter
 int main()
 {
    int numberOfBelts = 3; // 2 or 3
-   int loopLength = 34;
-   int cost = 23; // # of placements
+   int loopLength = 29;
+   int cost = 19; // # of placements
    auto printMode = PrintPatternsMode::UNIQUE; // NONE, ALL, or UNIQUE (which avoids printing cyclical duplicates -- uses extra memory)
 
    printBraidBitPatterns( numberOfBelts, loopLength, cost, printMode );
