@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <boost/rational.hpp>
 
 class XYit;
 
@@ -114,36 +113,36 @@ public:
    double x, y;
 };
 
-typedef boost::rational<int64_t> rat;
-
-class XYr
-{
-public:
-   XYr() { x = y = 0; }
-   XYr( const XY& p ) { x = p.x; y = p.y; }
-   XYr( const rat& xx, const rat& yy ) { x = xx; y = yy; }
-
-   XYr operator+( const XYr& p ) const { return XYr( x + p.x, y + p.y ); }
-   XYr operator-( const XYr& p ) const { return XYr( x - p.x, y - p.y ); }
-   XYr operator-() const { return XYr() - *this; }
-   XYr operator*( const rat& m ) const { return XYr( x * m, y * m ); }
-   XYr operator/( const rat& m ) const { return XYr( x / m, y / m ); }
-
-   XYr& operator+=( const XYr& p ) { return *this = *this + p; }
-   XYr& operator-=( const XYr& p ) { return *this = *this - p; }
-
-   rat operator*( const XYr& p ) const { return x * p.x + y * p.y; }
-   rat operator^( const XYr& p ) const { return x * p.y - y * p.x; }
-
-   rat len2() const { return x * x + y * y; }
-   rat dist2( const XYr& p ) const { return (*this - p).len2(); }
-
-   XYr rot90() const { return XYr( y, -x ); }
-   //	string str() { return "(" + x.str() + "," + y.str() + ")"; }	
-
-public:
-   rat x, y;
-};
+//typedef boost::rational<int64_t> rat;
+//
+//class XYr
+//{
+//public:
+//   XYr() { x = y = 0; }
+//   XYr( const XY& p ) { x = p.x; y = p.y; }
+//   XYr( const rat& xx, const rat& yy ) { x = xx; y = yy; }
+//
+//   XYr operator+( const XYr& p ) const { return XYr( x + p.x, y + p.y ); }
+//   XYr operator-( const XYr& p ) const { return XYr( x - p.x, y - p.y ); }
+//   XYr operator-() const { return XYr() - *this; }
+//   XYr operator*( const rat& m ) const { return XYr( x * m, y * m ); }
+//   XYr operator/( const rat& m ) const { return XYr( x / m, y / m ); }
+//
+//   XYr& operator+=( const XYr& p ) { return *this = *this + p; }
+//   XYr& operator-=( const XYr& p ) { return *this = *this - p; }
+//
+//   rat operator*( const XYr& p ) const { return x * p.x + y * p.y; }
+//   rat operator^( const XYr& p ) const { return x * p.y - y * p.x; }
+//
+//   rat len2() const { return x * x + y * y; }
+//   rat dist2( const XYr& p ) const { return (*this - p).len2(); }
+//
+//   XYr rot90() const { return XYr( y, -x ); }
+//   //	string str() { return "(" + x.str() + "," + y.str() + ")"; }	
+//
+//public:
+//   rat x, y;
+//};
 
 //class XYZ
 //{
