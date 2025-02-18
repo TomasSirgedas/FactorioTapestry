@@ -33,10 +33,6 @@ They can coexist on the same row like this:
 
 Notice that only half of the full pattern is important, but that "belt A" on one tile connects to "belt B" on neighboring tiles. The text output is doubled to make this behavior easier to understand.
 
-## Optimal tileable belt-weaving cost for a given tile length
-
-![image](https://github.com/user-attachments/assets/8014f7f8-f2b5-4dcb-bf4b-6de774019767)
-
 ## Upper bound on 2-d weaving density, given a tile size
 
 ![image](https://github.com/user-attachments/assets/433395a5-af09-4bb9-9c73-dfc3c418ac46)
